@@ -1,0 +1,20 @@
+{
+  "extends": ["airbnb-base"],
+  "parser": "babel-eslint",
+  "rules": {
+    "import/extensions": ["always"],
+    "no-confusing-arrow": ["error"],
+    "import/no-extraneous-dependencies": "off",
+    "no-console": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".mjs"
+        ]
+      }
+    }
+  }
+}
