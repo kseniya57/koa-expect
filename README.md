@@ -255,6 +255,21 @@ ctx.params.matrix3D = [[1], 1] //Bad request, matrix3D[0][1] should be array, bu
 ctx.params.matrix3D = [[1], [1]] // OK
 ```
 
+## Process
+
+```js
+{
+  code: {
+    type: Array,
+    required: true,
+    validate: (val) => val.length === 2,
+    process: (val) => val.join('_')
+  }
+}
+
+ctx.params.code = ['element', 5] // => expect => ctx.params.code = 'element_5'
+```
+
 ## Custom errors
 If `validatorName` error happen then `Error` with message `error[validatorName]` (or standard message) will be thrown.
 ```js

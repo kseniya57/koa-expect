@@ -15,7 +15,7 @@ const expect = (params, expectation, name) => Object.entries(expectation).forEac
 
   const {
     type, required, default: defaultVal,
-    validate, schema, item,
+    validate, schema, item, process,
   } = value;
 
   if (!params[key]) {
@@ -45,6 +45,10 @@ const expect = (params, expectation, name) => Object.entries(expectation).forEac
 
   if (type === Array && item) {
     expect(params[key], (new Array(params[key].length)).fill(item), keyName);
+  }
+
+  if (process && typeof process === 'function') {
+    params[key] = process(params[key], params);
   }
 });
 

@@ -1,15 +1,15 @@
 {
   "name": "koa-expect",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Params validator",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "mjs-mocha",
     "start": "node --experimental-modules --no-warnings index.mjs",
     "lint:check": "eslint --ext .mjs src/",
     "lint:fix": "eslint --ext .mjs src/ --fix"
   },
-  "keywords": [],
+  "keywords": ["koa", "validation", "params", "expect"],
   "author": "Kseniya <kaprisa57@gmail.com>",
   "license": "ISC",
   "devDependencies": {

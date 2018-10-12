@@ -85,5 +85,17 @@ describe('Main test', () => {
     expect(await test()).to.equal(schema.month.error.validate);
     [ctx.params.day, ctx.params.month] = [-1, 'October'];
     expect(await test()).to.equal(schema.day.error.validate);
+    ctx.params.day = 5;
+  });
+  it('Process', async () => {
+    ctx.params.code = ['element', 5];
+    schema.code = {
+      type: Array,
+      required: true,
+      validate: (v) => v.length === 2,
+      process: (v) => v.join('_')
+    };
+    expect(await test()).to.equal(true);
+    expect(ctx.params.code).to.equal('element_5')
   });
 });
