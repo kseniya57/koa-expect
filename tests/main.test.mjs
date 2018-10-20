@@ -91,7 +91,6 @@ describe('Main test', () => {
     ctx.params.code = ['element', 5];
     schema.code = {
       type: Array,
-      required: true,
       validate: (v) => v.length === 2,
       process: (v) => v.join('_')
     };

@@ -23,36 +23,47 @@ describe('Array', () => {
           limit: {
             type: Array,
             required: true,
-            validate: (v) => v.length === 2 && v[0] < v[1],
+            validate: v => v.length === 2 && v[0] < v[1],
             item: {
               type: Number,
               required: true,
-              validate: (v) => v > 0
-            }
-          }
+              validate: v => v > 0,
+            },
+          },
+          order: {
+            type: Array,
+            required: true,
+            item: String,
+          },
         },
-      }
+      },
     };
-    const itemWithBadLimit = {color: 'blue', type: 1, limit: 1};
-    ctx.params.data = [itemWithBadLimit, {color: 'blue', type: 1, limit: [1, 2]}];
+    const itemWithBadLimit = {
+      color: 'blue', type: 1, limit: 1, order: ['color'],
+    };
+    ctx.params.data = [itemWithBadLimit, {
+      color: 'blue', type: 1, limit: [1, 2],
+    }];
     expect(await test()).to.equal('Bad request, data[0][limit] should be array, but found number');
     itemWithBadLimit.limit = [5, 7];
+    expect(await test()).to.equal('Bad request, data[1][order] is required, no default value provided');
+    ctx.params.data[1].order = [5, 7];
+    expect(await test()).to.equal('Bad request, data[1][order][0] should have a type of string, but found number');
+    ctx.params.data[1].order = ['type', 'color'];
     expect(await test()).to.equal(true);
   });
   it('Type: array of array of array', async () => {
     schema.matrix3D = {
       type: Array,
-      required: true,
-      validate: (v) => v.length,
+      validate: v => v.length,
       item: {
         type: Array,
-        required: true,
         item: {
           type: Array,
-          required: true,
-          validate: (v) => v > 0
-        }
-      }
+          validate: v => v > 0,
+          item: Number,
+        },
+      },
     };
     ctx.params.matrix3D = [];
     expect(await test()).to.equal('Bad request, matrix3D is invalid');
@@ -64,5 +75,5 @@ describe('Array', () => {
     expect(await test()).to.equal('Bad request, matrix3D[0][1] should be array, but found number');
     ctx.params.matrix3D = [[[1], [1]]];
     expect(await test()).to.equal(true);
-  })
+  });
 });

@@ -1,7 +1,7 @@
 import throwAssertError from './error';
 import checkType from './type';
 
-const getKey = (name, key) => name ? `${name}[${key}]` : key;
+const getKey = (name, key) => (name ? `${name}[${key}]` : key);
 
 const expect = (params, expectation, name) => Object.entries(expectation).forEach(([key, value]) => {
   const keyName = getKey(name, key);
@@ -14,12 +14,12 @@ const expect = (params, expectation, name) => Object.entries(expectation).forEac
   }
 
   const {
-    type, required, default: defaultVal,
+    type, required = true, default: defaultVal,
     validate, schema, item, process,
   } = value;
 
   if (!params[key]) {
-    if (required === true || typeof required === 'function' && required(params)) {
+    if (required === true || (typeof required === 'function' && required(params))) {
       if (defaultVal) {
         // eslint-disable-next-line no-param-reassign
         params[key] = typeof defaultVal === 'function' ? defaultVal(params) : defaultVal;

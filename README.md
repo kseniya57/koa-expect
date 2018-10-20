@@ -32,17 +32,14 @@ app.use((ctx, next) => {
 const registerSchema = {
   email: {
     type: String,
-    required: true,
     validate: (v) => /.+@.+\..+/i.test(v)
   },
   name: String,
   password: {
     type: String,
-    required: true,
     validate: (v) => v.length >= 5
   },
   password_confirmation: {
-    required: true,
     validate: (v, params) => v === params.password,
     error: {
       validate: 'password_confirmation not matches to password'
@@ -50,8 +47,11 @@ const registerSchema = {
   },
   age: {
     type: Number,
-    required: true,
     default: 10
+  },
+  country: {
+    type: String,
+    required: false
   }
 };
 
@@ -65,6 +65,26 @@ router.post('/register', expect(registerSchema), (ctx) => {
 app.use(router.routes());
 
 app.listen(3000);
+```
+
+
+You can write like so:
+
+```js
+{
+  age: Number
+}
+```
+
+It is equivalent to
+
+```js
+{
+  age: {
+    type: Number,
+    required: true
+  }
+}
 ```
 
 ## Type
@@ -97,12 +117,17 @@ You can specify either only type:
 
 ## Required and default
 
+- `required === true` by default
+
 Let's pretend that params do not contain age
 
 - If `!required` then param will be skipped (in validation)
 ```js
 {
-  age: Number
+  age: {
+    required: false,
+    type: Number
+  }
 }
 ```
 
@@ -115,7 +140,6 @@ Let's pretend that params do not contain age
     default: 5 // => ctx.params.age === 5
   },
   size: {
-    required: true,
     default: (params) => params.age * 2 // => ctx.params.size === 10
   }
 }
@@ -125,8 +149,7 @@ Let's pretend that params do not contain age
 ```js
 {
   age: {
-    type: Number,
-    required: true
+    type: Number
   }
 }
 ```
@@ -233,7 +256,7 @@ If param is Array and you want to check each element then you can use `item`
 
 ```js
 {
-  matrix3D: {
+  matrix3D: { // [[[1, 2, 3], [4, 5, 6]], [[8, 9, 10], [11, 12, 13]]]
     type: Array,
     required: true,
     validate: (v) => v.length,
@@ -243,16 +266,22 @@ If param is Array and you want to check each element then you can use `item`
       item: {
         type: Array,
         required: true,
-        validate: (v) => v > 0
+        validate: (v) => v > 0,
+        item: Number
       }
     }
+  },
+  order: { // ['age', 'name']
+    type: Array,
+    required: true,
+    item: String
   }
 }
 
 ctx.params.matrix3D = [] // Bad request, matrix3D is invalid
 ctx.params.matrix3D = [1] // Bad request, matrix3D[0] should be array, but found number
-ctx.params.matrix3D = [[1], 1] //Bad request, matrix3D[0][1] should be array, but found number
-ctx.params.matrix3D = [[1], [1]] // OK
+ctx.params.matrix3D = [[[1], 1]] //Bad request, matrix3D[0][1] should be array, but found number
+ctx.params.matrix3D = [[[1], [1]]] // OK
 ```
 
 ## Process
