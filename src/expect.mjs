@@ -6,7 +6,7 @@ const getKey = (name, key) => (name ? `${name}[${key}]` : key);
 const expect = (params, expectation, name) => Object.entries(expectation).forEach(([key, value]) => {
   const keyName = getKey(name, key);
   if (typeof value !== 'object') {
-    if (!params[key]) {
+    if (params[key] === undefined || params[key] === null) {
       throwAssertError(`Bad request, ${keyName} is required`, value, 'required');
     }
     checkType(params[key], value, key, keyName, params);
