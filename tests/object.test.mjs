@@ -21,29 +21,29 @@ describe('Object types', () => {
           schema: {
             email: {
               type: String,
-              validate: (v) => v.endsWith('@gmail.com'),
+              validate: v => v.endsWith('@gmail.com'),
               error: {
-                validate: 'Only gmail.com email allowed'
-              }
+                validate: 'Only gmail.com email allowed',
+              },
             },
             password: {
               type: String,
               required: true,
-              validate: (v) => v.length >= 5
+              validate: v => v.length >= 5,
             },
             password_confirmation: {
               validate: (v, params) => v === params.password,
               error: {
-                validate: 'password_confirmation not matches to password'
-              }
+                validate: 'password_confirmation not matches to password',
+              },
             },
             age: {
               type: Number,
-              validate: (v) => v >= 17 && v <= 35
-            }
-          }
-        }
-      }
+              validate: v => v >= 17 && v <= 35,
+            },
+          },
+        },
+      },
     };
     ctx.params.data = 'Data';
     expect(await test()).to.equal('Bad request, data should have a type of object, but found string');
@@ -61,7 +61,8 @@ describe('Object types', () => {
   });
   it('Validate', async () => {
     ctx.params.data.user.password_confirmation += '_';
-    expect(await test()).to.equal(schema.data.schema.user.schema.password_confirmation.error.validate);
+    expect(await test())
+      .to.equal(schema.data.schema.user.schema.password_confirmation.error.validate);
     ctx.params.data.user.password_confirmation = ctx.params.data.user.password;
     expect(await test()).to.equal(true);
     ctx.params.data.user.email = 'hello@mail.ru';

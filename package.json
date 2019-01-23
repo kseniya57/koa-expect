@@ -1,14 +1,14 @@
 {
   "name": "koa-expect",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Params validator",
-  "main": "index.mjs",
+  "main": "index.js",
   "repository": "github:Kaprisa/koa-expect",
   "scripts": {
     "test": "mjs-mocha",
-    "start": "node --experimental-modules --no-warnings index.mjs",
-    "lint:check": "eslint --ext .mjs src/",
-    "lint:fix": "eslint --ext .mjs src/ --fix"
+    "start": "node index",
+    "lint:check": "eslint --ext .mjs,.js ./",
+    "lint:fix": "eslint --ext .mjs,.js ./ --fix"
   },
   "keywords": [
     "koa",

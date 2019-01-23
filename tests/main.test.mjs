@@ -14,12 +14,12 @@ describe('Main test', () => {
     schema.month = {
       type: String,
       required: true,
-      validate: (v) => ['September', 'October', 'November'].includes(v),
+      validate: v => ['September', 'October', 'November'].includes(v),
       error: {
         validate: 'Month must be one of autumn months',
         required: 'Month is required',
-        type: 'Month must be a String'
-      }
+        type: 'Month must be a String',
+      },
     };
     ctx.params.month = 1;
     expect(await test()).to.equal(schema.month.error.type);
@@ -27,16 +27,16 @@ describe('Main test', () => {
     expect(await test()).to.equal(true);
   });
   it('Type: Number', async () => {
-    schema.year =Number;
+    schema.year = Number;
     ctx.params.year = 2018;
     expect(await test()).to.equal(true);
     schema.day = {
       type: Number,
       required: true,
-      validate: (v) => v > 0 && v < 32,
+      validate: v => v > 0 && v < 32,
       error: {
         validate: 'Day must be in range [1, 31]',
-      }
+      },
     };
     ctx.params.day = '1';
     expect(await test()).to.equal(true);
@@ -49,7 +49,7 @@ describe('Main test', () => {
     schema.true = {
       type: Boolean,
       required: true,
-      validate: (v) => v,
+      validate: v => v,
     };
     ctx.params.true = [true];
     expect(await test()).to.equal('Bad request, true should have a type of boolean, but found array');
@@ -71,10 +71,10 @@ describe('Main test', () => {
     expect(ctx.params.month).to.be.an('undefined');
 
     schema.key = {
-      required: (params) => !params.index,
+      required: params => !params.index,
       error: {
-        required: 'Params must contain either key or index'
-      }
+        required: 'Params must contain either key or index',
+      },
     };
     expect(await test()).to.equal(schema.key.error.required);
     ctx.params.index = 1;
@@ -91,10 +91,10 @@ describe('Main test', () => {
     ctx.params.code = ['element', 5];
     schema.code = {
       type: Array,
-      validate: (v) => v.length === 2,
-      process: (v) => v.join('_')
+      validate: v => v.length === 2,
+      process: v => v.join('_'),
     };
     expect(await test()).to.equal(true);
-    expect(ctx.params.code).to.equal('element_5')
+    expect(ctx.params.code).to.equal('element_5');
   });
 });

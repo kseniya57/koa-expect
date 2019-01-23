@@ -1,6 +1,6 @@
-import throwAssertError from './error';
+const { throwAssertError } = require('./error');
 
-export default (value, requiredType, key, keyName, params, expectation) => {
+module.exports = (value, requiredType, key, keyName, params, expectation) => {
   const throwTypeError = message => throwAssertError(message, expectation, 'type');
 
   if (typeof requiredType !== 'function') {

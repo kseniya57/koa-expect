@@ -1,6 +1,6 @@
-import expect from './src/expect';
+const expect = require('./src/expect');
 
-export default (expectation) => async (ctx, next) => {
+module.exports = expectation => async (ctx, next) => {
   expect(ctx.params || (ctx.method === 'GET' ? ctx.query : ctx.request.body), expectation);
   await next();
 };

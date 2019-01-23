@@ -5,7 +5,8 @@
     "import/extensions": ["always"],
     "no-confusing-arrow": ["error"],
     "import/no-extraneous-dependencies": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "no-param-reassign": "off"
   },
   "settings": {
     "import/resolver": {
@@ -16,5 +17,13 @@
         ]
       }
     }
+  },
+  "globals": {
+    "beforeEach": true,
+    "afterEach": true,
+    "describe": true,
+    "before": true,
+    "after": true,
+    "it": true
   }
 }
