@@ -11,4 +11,4 @@ const throwAssertError = (message, expectation, type) => {
   throw new ErrorWithStatus((typeof e === 'string' && e) || e.message || message, e.status || 400);
 };
 
-module.exports = { ErrorWithStatus, throwAssertError };
+module.exports = throwAssertError;

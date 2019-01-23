@@ -1,4 +1,4 @@
-const { throwAssertError } = require('./error');
+const throwAssertError = require('./error');
 
 module.exports = (value, requiredType, key, keyName, params, expectation) => {
   const throwTypeError = message => throwAssertError(message, expectation, 'type');

@@ -1,4 +1,4 @@
-const { throwAssertError } = require('./error');
+const throwAssertError = require('./error');
 const checkType = require('./type');
 
 const getKey = (name, key) => (name ? `${name}[${key}]` : key);
