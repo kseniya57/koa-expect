@@ -18,7 +18,7 @@ const expect = (params, expectation, name) => Object.entries(expectation).forEac
     validate, schema, item, process,
   } = value;
 
-  if (!params[key]) {
+  if (params[key] === undefined || params[key] === null) {
     if (required === true || (typeof required === 'function' && required(params))) {
       if (defaultVal) {
         // eslint-disable-next-line no-param-reassign
