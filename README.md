@@ -29,7 +29,7 @@ app.use((ctx, next) => {
 });
 /* -------- */
 
-const registerSchema = {
+const inputSchema = {
   email: {
     type: String,
     validate: (v) => /.+@.+\..+/i.test(v)
@@ -55,10 +55,26 @@ const registerSchema = {
   }
 };
 
+const outputSchema = {
+  email: {
+    type: String,
+    validate: (v) => /.+@.+\..+/i.test(v)
+  },
+  name: String,
+  age: {
+    type: Number,
+    default: 10
+  },
+  country: {
+    type: String,
+    required: false
+  }
+};
+
 import Router from 'koa-router';
 const router = new Router();
 
-router.post('/register', expect(registerSchema), (ctx) => {
+router.post('/register', expect(inputSchema, outputSchema), (ctx) => {
   ctx.body = 'ok';
 });
 
