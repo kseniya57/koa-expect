@@ -11,6 +11,6 @@ module.exports = (inputSchema, outputSchema) => async (ctx, next) => {
   await next();
 
   if (outputSchema) {
-    expect(ctx.body, inputSchema);
+    expect(ctx.body, outputSchema);
   }
 };
