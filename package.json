@@ -1,6 +1,6 @@
 {
   "name": "koa-expect",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Params validator",
   "main": "index.js",
   "repository": "github:Kaprisa/koa-expect",
