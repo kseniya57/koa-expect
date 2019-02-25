@@ -6,8 +6,7 @@
     "no-confusing-arrow": ["error"],
     "import/no-extraneous-dependencies": "off",
     "no-console": "off",
-    "no-param-reassign": "off",
-    "max-len": ["error", 85]
+    "no-param-reassign": "off"
   },
   "settings": {
     "import/resolver": {

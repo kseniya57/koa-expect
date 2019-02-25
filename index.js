@@ -2,7 +2,7 @@ const expect = require('./src/expect');
 
 module.exports = (inputSchema, outputSchema) => async (ctx, next) => {
   if (inputSchema) {
-    expect(
+    await expect(
       ctx.params || (ctx.method === 'GET' ? ctx.query : ctx.request.body),
       inputSchema,
     );
@@ -11,6 +11,6 @@ module.exports = (inputSchema, outputSchema) => async (ctx, next) => {
   await next();
 
   if (outputSchema) {
-    expect(ctx.body, outputSchema);
+    await expect(ctx.body, outputSchema);
   }
 };

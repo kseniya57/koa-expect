@@ -3,8 +3,8 @@ const checkType = require('./type');
 
 const getKey = (name, key) => (name ? `${name}[${key}]` : key);
 
-const expect = (params, expectation, name) => Object.entries(expectation)
-  .forEach(([key, value]) => {
+const expect = async (params, expectation, name) => Promise.all(Object.entries(expectation)
+  .map(async ([key, value]) => {
     const keyName = getKey(name, key);
     if (typeof value !== 'object') {
       if (params[key] === undefined || params[key] === null) {
@@ -20,10 +20,10 @@ const expect = (params, expectation, name) => Object.entries(expectation)
     } = value;
 
     if (params[key] === undefined || params[key] === null) {
-      if (required === true || (typeof required === 'function' && required(params))) {
+      if (required === true || (typeof required === 'function' && await required(params))) {
         if (defaultVal) {
         // eslint-disable-next-line no-param-reassign
-          params[key] = typeof defaultVal === 'function' ? defaultVal(params) : defaultVal;
+          params[key] = typeof defaultVal === 'function' ? await defaultVal(params) : defaultVal;
         } else {
           throwAssertError(`Bad request, ${keyName} is required, no default value provided`, value, 'required');
         }
@@ -41,16 +41,16 @@ const expect = (params, expectation, name) => Object.entries(expectation)
     }
 
     if (schema && typeof schema === 'object') {
-      expect(params[key], schema, keyName);
+      await expect(params[key], schema, keyName);
     }
 
     if (type === Array && item) {
-      expect(params[key], (new Array(params[key].length)).fill(item), keyName);
+      await expect(params[key], (new Array(params[key].length)).fill(item), keyName);
     }
 
     if (process && typeof process === 'function') {
-      params[key] = process(params[key], params);
+      params[key] = await process(params[key], params);
     }
-  });
+  }));
 
 module.exports = expect;
